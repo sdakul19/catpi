@@ -1,0 +1,22 @@
+#:include piTFT/colors.kv
+
+<CircleButton@Button>:
+    
+    size_hint: None, None
+    background_color: (0,0,0,0)
+    background_normal: ''
+    width: 65
+
+    height: self.width
+    
+    circle_color: 0.5, 0.5, 0.5, 1
+
+    canvas.before:
+        Color:
+            rgba: self.circle_color
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
+    
+        
