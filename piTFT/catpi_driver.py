@@ -20,7 +20,7 @@ BLUE_GPIO = 13
 CHANNEL_PINS = [RED_GPIO, GREEN_GPIO, BLUE_GPIO]
 
 
-class LampDriver:
+class CatpiDriver:
     def __init__(self):
         """Create a LampDriver and set up pigpio.
         Silently skips setup if pigpio is not found."""
@@ -37,6 +37,7 @@ class LampDriver:
             self.pi.set_PWM_range(pin, PWM_RANGE)
             self.pi.set_PWM_dutycycle(pin, 0)
 
+    
     def set_lamp_state(self, hue: float, saturation: float,
                        brightness: float, is_on: bool) -> None:
         """Set the lamp color and on/off state.

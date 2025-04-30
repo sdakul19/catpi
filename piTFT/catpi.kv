@@ -1,0 +1,115 @@
+#:kivy 1.9
+#:include piTFT/controls/circle_button.kv
+#:include piTFT/controls/thick_bar.kv
+#:include piTFT/colors.kv
+
+ScreenManager:
+
+  id: screen_manager
+
+  Screen:
+    name: 'main_screen'
+    BoxLayout:
+      canvas.before:
+        Color:
+          rgba: offwhite
+        Rectangle:
+          pos: self.pos
+          size: self.size
+      orientation: 'vertical'
+      BoxLayout:
+        orientation: 'vertical'
+        padding: 30, 30, 30, 0
+        size_hint_y: 0.70
+        
+        ThickBar:
+          id: amount_bar
+          height: 70
+          value: 1.0
+          bar_color: blue
+          on_value: app.remaining = self.value
+          
+        Label:
+          id: auto_label
+          text: 'AUTO: OFF'
+          font_size: '18sp'
+          size_hint_y: 0.20
+          color: black
+          
+
+      BoxLayout:
+        orientation: 'horizontal'
+        padding: 10, 0, 10, 10
+        spacing: 10
+        pos_hint: {'center_x': 0.5}
+        size_hint_y: 0.30
+
+        CircleButton:
+          id: feed_button
+          circle_color: green
+          text: "FEED"
+          #on_state: app.on_feed()
+          on_press: amount_bar.value = amount_bar.value - .1
+
+        CircleButton:
+          circle_color: red
+          text: "AUTO"
+          on_press:
+            app.on_auto()
+            auto_label.text = 'AUTO: ' + ('ON' if app.auto else 'OFF')
+          
+        CircleButton:
+          circle_color: yellow
+          text: "SET"
+          on_press: screen_manager.current = 'set_time_screen'
+
+  Screen:
+    name: 'set_time_screen'
+
+    BoxLayout:
+      orientation: 'vertical'
+      padding: 30
+      spacing: 20
+
+      Label:
+        text: 'Set Time'
+        font_size: '24sp'
+
+      Spinner:
+        id: breakfast_spinner
+        text: '8:00 AM'
+        values: ['7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM']
+
+
+      Spinner:
+        id: lunch_spinner
+        text: '12:00 PM'
+        values: ['11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM']
+
+      Spinner:
+        id: dinner_spinner
+        text: '6:00 PM'
+        values: ['4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM']
+
+      Button:
+        text: 'Save'
+        on_press: app.save_times(breakfast_spinner.text, lunch_spinner.text, dinner_spinner.text)
+        on_press: screen_manager.current = 'main_screen'
+
+
+#   BoxLayout:
+#     orientation: 'vertical'
+#     size_hint_y: 0.33
+#     ColorBox:
+#       id: button_hue
+#       size_hint_y: 0.1
+#       color: hsv_to_rgb(app.hue, app.saturation, 1.0)
+#     LampiToggle:
+#       id: button_onoff
+#       size_hint_y: 0.90
+#       image: 'images/power_icon_light.png'
+#       accent_color: hsv_to_rgb(hue_slider.value, saturation_slider.value, 1.0)
+#       text: ''
+#       state: 'down' if app.lamp_is_on else 'normal'
+#       on_state:  app.lamp_is_on = True if self.state == 'down' else False
+

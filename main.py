@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from piTFT.knippi_app import KnippiApp
+from piTFT.catpi_app import CatpiApp
 
 if __name__ == "__main__":
-    KnippiApp().run()
+    CatpiApp().run()
