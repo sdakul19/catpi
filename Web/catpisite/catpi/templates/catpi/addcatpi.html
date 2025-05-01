@@ -1,0 +1,13 @@
+{% extends "catpi/base.html" %}
+
+{% block title %}Add CATPI{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add CATPI" />
+</form>
+{% endblock %}
+
+{% block page_event %}Add CATPI{% endblock %}
