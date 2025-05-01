@@ -16,6 +16,7 @@ PWM_RANGE = 1000
 PWM_FREQUENCY = 1000
 
 CATPI_STATE_FILENAME = "catpi_state"
+FP_DIGITS = 2
 
 MQTT_CLIENT_ID = "catpi_service"
 
@@ -44,6 +45,7 @@ class InvalidCatpiConfig(Exception):
 
 class CatpiService(object):
     def __init__(self):
+        
         self.catpi_driver = CatpiDriver()
         self._client = self._create_and_configure_broker_client()
         self.db = shelve.open(CATPI_STATE_FILENAME, writeback=True)
@@ -54,9 +56,12 @@ class CatpiService(object):
         if 'auto' not in self.db:
             self.db['auto'] = False
         if 'remaining' not in self.db:
-            self.db['remaining'] = 10
+            self.db['remaining'] = 1.0
         if 'client' not in self.db:
             self.db['client'] = ''
+
+
+        print(self.db)
         # self.write_current_settings_to_hardware()
 
     def _create_and_configure_broker_client(self):
@@ -101,7 +106,6 @@ class CatpiService(object):
               msg.topic + " with payload '" + str(msg.payload) + "'")
 
     def on_message_set_config(self, client, userdata, msg):
-        
         try:
             new_config = json.loads(msg.payload.decode('utf-8'))
             if 'client' not in new_config:
@@ -113,7 +117,7 @@ class CatpiService(object):
             if 'auto' in new_config:
                 self.set_current_auto(new_config['auto'])
             if 'settings' in new_config:
-                self.set_current_auto(new_config['settings'])
+                self.set_current_settings(new_config['settings'])
             self.publish_config_change()
         except InvalidCatpiConfig:
             print("error applying new settings " + str(msg.payload))
@@ -121,10 +125,12 @@ class CatpiService(object):
     def publish_config_change(self):
         config = {'remaining': self.get_current_remaining(),
                   'auto': self.get_current_auto(),
-                  'settings': self.get_current_settings()}
+                  'settings': self.get_current_settings(),
+                  'client': self.get_last_client()}
         self._client.publish(TOPIC_CATPI_CHANGE_NOTIFICATION,
                              json.dumps(config).encode('utf-8'), qos=1,
                              retain=True)
+        
 
 
     def get_last_client(self):
@@ -146,8 +152,9 @@ class CatpiService(object):
 
     def set_current_remaining(self, new_remaining):
         if new_remaining < 0 or new_remaining > 10:
+            
             raise InvalidCatpiConfig
-        self.db['remaining'] = new_remaining
+        self.db['remaining'] = round(new_remaining, FP_DIGITS)
 
     def get_current_settings(self):
         return self.db['settings'].copy()
@@ -157,6 +164,7 @@ class CatpiService(object):
             if new_settings[time] not in ['7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM',
                 '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM',
                 '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM']:
+                
                 raise InvalidCatpiConfig
         for time in ['breakfast', 'lunch', 'dinner']:
             self.db['settings'][time] = new_settings[time]

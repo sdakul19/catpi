@@ -31,7 +31,7 @@ ScreenManager:
           
         Label:
           id: auto_label
-          text: 'AUTO: OFF'
+          text: 'AUTO: ' + ('ON' if app.auto_is_on else 'OFF')
           font_size: '18sp'
           size_hint_y: 0.20
           color: black
@@ -48,15 +48,16 @@ ScreenManager:
           id: feed_button
           circle_color: green
           text: "FEED"
-          #on_state: app.on_feed()
-          on_press: amount_bar.value = amount_bar.value - .1
+          on_press: 
+            amount_bar.value = amount_bar.value - 0.1
+            app.on_feed()
 
         CircleButton:
           circle_color: red
           text: "AUTO"
-          on_press:
-            app.on_auto()
-            auto_label.text = 'AUTO: ' + ('ON' if app.auto else 'OFF')
+          on_press: app.toggle_auto_mode()
+          #state: 'down' if not app.auto_is_on else 'normal'
+          #on_state: app.auto_is_on = False if self.state == 'down' else True
           
         CircleButton:
           circle_color: yellow
