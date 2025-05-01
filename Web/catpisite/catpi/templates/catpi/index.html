@@ -1,0 +1,20 @@
+{% extends "catpi/base.html" %}
+
+{% block content %}
+
+{% if catpi_list %}
+    <ul>
+    {% for device in catpi_list %}
+       <li><a href="{% url 'catpi:detail' device.device_id %}">
+        {{ device.name }} {{device.device_id }}</a></li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'catpi:add' %}">Add a CATPI Device</a>
+{% else %}
+    <p>No devices are available.</p>
+    <a href="{% url 'catpi:add' %}">Add a CATPI Device</a>
+{% endif %}
+
+{% endblock %}
+
+{% block page_event %}CATPI List{% endblock %}

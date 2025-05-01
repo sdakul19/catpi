@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catpi App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="screen-manager">
+        <div id="main-screen" class="screen active">
+            <div class="box-layout">
+                <div class="thick-bar-container">
+                    <div class="thick-bar" id="amount-bar"></div>
+                </div>
+                <div class="label" id="auto-label">AUTO: OFF</div>
+            </div>
+            <div class="button-layout">
+                <button id="feed-button" class="circle-button green">FEED</button>
+                <button id="auto-button" class="circle-button red">AUTO</button>
+                <button id="set-button" class="circle-button yellow">SET</button>
+            </div>
+        </div>
+        <div id="set-time-screen" class="screen">
+            <div class="box-layout">
+                <div class="label">Set Time</div>
+                <select id="breakfast-spinner">
+                    <option value="7:00 AM">7:00 AM</option>
+                    <option value="7:30 AM">7:30 AM</option>
+                    <option value="8:00 AM" selected>8:00 AM</option>
+                    <option value="8:30 AM">8:30 AM</option>
+                    <option value="9:00 AM">9:00 AM</option>
+                    <option value="9:30 AM">9:30 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="10:30 AM">10:30 AM</option>
+                </select>
+                <select id="lunch-spinner">
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="11:30 AM">11:30 AM</option>
+                    <option value="12:00 PM" selected>12:00 PM</option>
+                    <option value="12:30 PM">12:30 PM</option>
+                    <option value="1:00 PM">1:00 PM</option>
+                    <option value="1:30 PM">1:30 PM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="2:30 PM">2:30 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                    <option value="3:30 PM">3:30 PM</option>
+                </select>
+                <select id="dinner-spinner">
+                    <option value="4:00 PM">4:00 PM</option>
+                    <option value="4:30 PM">4:30 PM</option>
+                    <option value="5:00 PM">5:00 PM</option>
+                    <option value="5:30 PM">5:30 PM</option>
+                    <option value="6:00 PM" selected>6:00 PM</option>
+                    <option value="6:30 PM">6:30 PM</option>
+                    <option value="7:00 PM">7:00 PM</option>
+                    <option value="7:30 PM">7:30 PM</option>
+                    <option value="8:00 PM">8:00 PM</option>
+                    <option value="8:30 PM">8:30 PM</option>
+                    <option value="9:00 PM">9:00 PM</option>
+                </select>
+                <button id="save-button">Save</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
